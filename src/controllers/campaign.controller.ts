@@ -1,5 +1,7 @@
-import { Response } from "express";
+
 import prisma from "../prisma";
+import { Request, Response } from "express";
+
 import { AuthRequest } from "../middleware/auth";
 
 export const createCampaign = async (req: AuthRequest, res: Response) => {
@@ -35,3 +37,21 @@ export const createCampaign = async (req: AuthRequest, res: Response) => {
 
   res.status(201).json(campaign);
 };
+export const getAllCampaigns = async (req: Request, res: Response) => {
+  const campaigns = await prisma.campaign.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      creator: {
+        select: {
+          name: true,
+          country: true,
+        },
+      },
+    },
+  });
+
+  res.json(campaigns);
+};
+

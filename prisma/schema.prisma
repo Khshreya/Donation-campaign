@@ -26,6 +26,7 @@ model User {
 
   createdAt DateTime   @default(now())
   campaigns Campaign[]
+  donations Donation[]
 }
 
 model Campaign {
@@ -37,6 +38,21 @@ model Campaign {
 
   creatorId String
   creator   User   @relation(fields: [creatorId], references: [id])
+
+  createdAt DateTime   @default(now())
+  donations Donation[]
+}
+
+model Donation {
+  id     String  @id @default(cuid())
+  amount Int
+  note   String?
+
+  donorId String
+  donor   User   @relation(fields: [donorId], references: [id])
+
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
 
   createdAt DateTime @default(now())
 }

@@ -1,24 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
+import healthRoutes from "./routes/health";
 
 dotenv.config();
 
 const app = express();
 
-// Middleware to parse JSON
 app.use(express.json());
 
-// Test route
-app.get("/health", (req, res) => {
-  res.json({ status: "Backend is running fine" });
-});
-app.post("/test", (req, res) => {
-  const data = req.body;
-  res.json({
-    message: "Received data successfully",
-    data: data,
-  });
-});
+// register routes
+app.use("/", healthRoutes);
 
 const PORT = process.env.PORT || 5000;
 

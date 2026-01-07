@@ -12,6 +12,13 @@ app.use(express.json());
 app.get("/health", (req, res) => {
   res.json({ status: "Backend is running fine" });
 });
+app.post("/test", (req, res) => {
+  const data = req.body;
+  res.json({
+    message: "Received data successfully",
+    data: data,
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 

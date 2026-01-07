@@ -24,5 +24,19 @@ model User {
 
   profileComplete Boolean @default(false)
 
+  createdAt DateTime   @default(now())
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  goalAmount  Int
+  imageUrl    String?
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
   createdAt DateTime @default(now())
 }

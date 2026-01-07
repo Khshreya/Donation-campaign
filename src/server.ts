@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import webhookRoutes from "./routes/webhooks.routes";
 
 import profileRoutes from "./routes/profile.routes";
-
+import campaignRoutes from "./routes/campaign.routes";
 
 
 
@@ -25,6 +25,7 @@ app.use(
 );
 app.use("/api", profileRoutes);
 app.use("/webhooks", webhookRoutes);
+app.use("/api", campaignRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

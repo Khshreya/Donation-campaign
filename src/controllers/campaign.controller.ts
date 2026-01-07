@@ -55,3 +55,24 @@ export const getAllCampaigns = async (req: Request, res: Response) => {
   res.json(campaigns);
 };
 
+export const getCampaignById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const campaign = await prisma.campaign.findUnique({
+    where: { id },
+    include: {
+      creator: {
+        select: {
+          name: true,
+          country: true,
+        },
+      },
+    },
+  });
+
+  if (!campaign) {
+    return res.status(404).json({ message: "Campaign not found" });
+  }
+
+  res.json(campaign);
+};

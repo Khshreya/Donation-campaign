@@ -1,9 +1,15 @@
 import { Router } from "express";
-import { createCampaign } from "../controllers/campaign.controller";
+import {
+  createCampaign,
+  getAllCampaigns,
+  getCampaignById,
+} from "../controllers/campaign.controller";
 import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
-router.post("/campaigns", requireAuth, createCampaign);
+router.get("/campaigns", getAllCampaigns);             
+router.get("/campaigns/:id", getCampaignById);          
+router.post("/campaigns", requireAuth, createCampaign); 
 
 export default router;

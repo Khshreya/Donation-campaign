@@ -1,32 +1,27 @@
 import express from "express";
 import dotenv from "dotenv";
-import webhookRoutes from "./routes/webhooks.routes";
-
-import profileRoutes from "./routes/profile.routes";
-import campaignRoutes from "./routes/campaign.routes";
-import donationRoutes from "./routes/donation.routes";
-
+import cors from "cors";
+import { clerkWebhook } from "./webhooks/clerk.webhook";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+app.use(cors());
 
+// ✅ RAW BODY ONLY FOR WEBHOOK
+app.post(
+  "/webhooks/clerk",
+  express.raw({ type: "application/json" }),
+  clerkWebhook
+);
+
+// ❌ JSON parser AFTER webhook
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.json({ status: "Backend is running fine" });
 });
 
-
-app.use(
-  "/webhooks/clerk",
-  express.raw({ type: "application/json" })
-);
-app.use("/api", profileRoutes);
-app.use("/webhooks", webhookRoutes);
-app.use("/api", campaignRoutes);
-app.use("/api", donationRoutes);
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(5000, () => {
+  console.log("Server running on http://localhost:5000");
 });

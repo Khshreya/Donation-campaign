@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import prisma from "../prisma";
 import { AuthRequest } from "../middleware/auth";
 
@@ -41,4 +41,29 @@ export const createDonation = async (req: AuthRequest, res: Response) => {
   });
 
   res.status(201).json(donation);
+};
+export const getDonationsByCampaign = async (req: Request, res: Response) => {
+  const { id: campaignId } = req.params;
+
+  const donations = await prisma.donation.findMany({
+    where: { campaignId },
+    orderBy: { createdAt: "desc" },
+    include: {
+      donor: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  const totalRaised = donations.reduce(
+    (sum, donation) => sum + donation.amount,
+    0
+  );
+
+  res.json({
+    totalRaised,
+    donations,
+  });
 };

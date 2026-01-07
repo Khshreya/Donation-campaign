@@ -14,8 +14,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String?  @unique
-  name      String?
+  id      String  @id @default(cuid())
+  clerkId String  @unique
+  email   String?
+
+  name    String?
+  dob     DateTime?
+  country String?
+
+  profileComplete Boolean @default(false)
+
   createdAt DateTime @default(now())
 }

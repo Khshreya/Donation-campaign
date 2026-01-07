@@ -1,6 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
-import usersRoutes from "./routes/users.routes";
+import webhookRoutes from "./routes/webhooks.routes";
+
+import profileRoutes from "./routes/profile.routes";
+
+
+
 
 dotenv.config();
 
@@ -13,8 +18,13 @@ app.get("/", (req, res) => {
   res.json({ status: "Backend is running fine" });
 });
 
-app.use("/users", usersRoutes);
 
+app.use(
+  "/webhooks/clerk",
+  express.raw({ type: "application/json" })
+);
+app.use("/api", profileRoutes);
+app.use("/webhooks", webhookRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
